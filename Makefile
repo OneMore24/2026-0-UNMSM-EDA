@@ -1,20 +1,26 @@
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -g -pthread # Añadido -pthread
-LDFLAGS = -pthread # Añadido -pthread
+CXXFLAGS = -Wall -Wextra -std=c++17
 
-TARGET = main
+TARGET = main.exe
 SRCS = main.cpp util.cpp pointers.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CXX) $(LDFLAGS) $^ -o $@
+	$(CXX) -o $@ $^
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-clean:
-	rm -f $(OBJS) $(TARGET)
+run: $(TARGET)
+	./$(TARGET)
 
-.PHONY: all clean
+clean:
+	@if exist $(TARGET) del $(TARGET) 2>nul
+	@if exist *.o del *.o 2>nul
+	@if exist src\*.o del src\*.o 2>nul
+	@if exist obj\*.o del obj\*.o 2>nul
+	@if exist build\*.o del build\*.o 2>nul
+
+.PHONY: all run clean
